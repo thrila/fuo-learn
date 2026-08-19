@@ -2,7 +2,6 @@ node_modules/
 dist/
 uploads/
 .env
-password.txt
 *.js.map
 *.d.ts
 !src/**/*.d.ts
