@@ -63,7 +63,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="mb-8 flex flex-col items-center gap-3">
           <img src="/FUO_Logo.png" alt="Federal University Otuoke" className="h-20 w-auto" />
-          <h1 className="font-heading text-3xl font-bold text-text-primary">EduMatrix</h1>
+          <h1 className="font-heading text-3xl font-bold text-text-primary">FuoLearn</h1>
         </div>
 
         <div className="surface-card p-8">
