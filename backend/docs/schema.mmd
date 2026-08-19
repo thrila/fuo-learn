@@ -1,0 +1,100 @@
+erDiagram
+    users {
+        uuid id PK
+        varchar email UK
+        varchar password_hash
+        varchar first_name
+        varchar last_name
+        varchar role
+        varchar status
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    courses {
+        uuid id PK
+        varchar title
+        text description
+        varchar code UK
+        uuid professor_id FK
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    enrollments {
+        uuid id PK
+        uuid course_id FK
+        uuid student_id FK
+        varchar status
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    materials {
+        uuid id PK
+        uuid course_id FK
+        varchar title
+        varchar file_url
+        varchar file_type
+        varchar file_key
+        uuid uploaded_by FK
+        timestamptz created_at
+    }
+
+    quizzes {
+        uuid id PK
+        uuid course_id FK
+        varchar title
+        text description
+        boolean is_published
+        varchar generation_status
+        uuid created_by FK
+        timestamptz created_at
+        timestamptz updated_at
+    }
+
+    questions {
+        uuid id PK
+        uuid quiz_id FK
+        text question
+        jsonb options
+        varchar correct_answer
+        text explanation
+        integer sort_order
+        timestamptz created_at
+    }
+
+    quiz_attempts {
+        uuid id PK
+        uuid quiz_id FK
+        uuid student_id FK
+        numeric score
+        timestamptz started_at
+        timestamptz completed_at
+    }
+
+    quiz_attempt_answers {
+        uuid id PK
+        uuid attempt_id FK
+        uuid question_id FK
+        varchar selected_answer
+        boolean is_correct
+        timestamptz created_at
+    }
+
+    users ||--o{ courses : "professor creates"
+    users ||--o{ enrollments : "student requests"
+    users ||--o{ materials : "uploads"
+    users ||--o{ quizzes : "creates"
+    users ||--o{ quiz_attempts : "takes"
+
+    courses ||--o{ enrollments : "has"
+    courses ||--o{ materials : "has"
+    courses ||--o{ quizzes : "has"
+
+    quizzes ||--o{ questions : "has"
+    quizzes ||--o{ quiz_attempts : "has"
+
+    questions ||--o{ quiz_attempt_answers : "answered in"
+
+    quiz_attempts ||--o{ quiz_attempt_answers : "contains"
