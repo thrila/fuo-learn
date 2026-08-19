@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  /* Fonts */
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-heading: 'DM Sans', 'Inter', system-ui, sans-serif;
+  --font-reading: 'Lora', Georgia, serif;
+  --font-code: 'JetBrains Mono', monospace;
+
+  /* Backgrounds */
+  --color-bg-base: #F7F8FC;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-subtle: #EEF0F6;
+  --color-bg-sidebar: #F0F2F8;
+
+  /* Primary — Deep Blue */
+  --color-primary: #2563EB;
+  --color-primary-light: #DBEAFE;
+  --color-primary-dark: #1E40AF;
+
+  /* Secondary — Sage Green */
+  --color-secondary: #059669;
+  --color-secondary-light: #D1FAE5;
+  --color-secondary-dark: #047857;
+
+  /* Text */
+  --color-text-primary: #111827;
+  --color-text-secondary: #374151;
+  --color-text-muted: #6B7280;
+  --color-text-disabled: #9CA3AF;
+
+  /* Semantic */
+  --color-error: #DC2626;
+  --color-warning: #D97706;
+  --color-success: #059669;
+  --color-info: #0EA5E9;
+
+  /* Borders */
+  --color-border-subtle: #E5E7EB;
+  --color-border-default: #D1D5DB;
+  --color-border-strong: #9CA3AF;
+}
+
+body {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+.surface-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.content-measure {
+  max-width: 65ch;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
