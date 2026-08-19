@@ -1,0 +1,42 @@
+# Markdown files except README
+*.md
+!**/README.md
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Uploads
+uploads/
+
+# Password / secrets
+password.txt
+
+# Stray dev artifacts
+-w
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.sw?
+*.suo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Source maps and declarations (backend)
+*.js.map
+*.d.ts
+!src/**/*.d.ts
