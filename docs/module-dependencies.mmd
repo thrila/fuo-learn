@@ -1,0 +1,124 @@
+graph LR
+    subgraph "Auth Module"
+        A1[auth.types.ts]
+        A2[auth.repository.ts]
+        A3[auth.service.ts]
+        A4[auth.manager.ts]
+        A5[auth.controller.ts]
+        A6[auth.routes.ts]
+        A7[admin-seed.ts]
+    end
+
+    subgraph "Courses Module"
+        C1[course.types.ts]
+        C2[course.repository.ts]
+        C3[course.service.ts]
+        C4[course.manager.ts]
+        C5[course.controller.ts]
+        C6[course.routes.ts]
+    end
+
+    subgraph "Enrollments Module"
+        E1[enrollment.types.ts]
+        E2[enrollment.repository.ts]
+        E3[enrollment.service.ts]
+        E4[enrollment.manager.ts]
+        E5[enrollment.controller.ts]
+        E6[enrollment.routes.ts]
+    end
+
+    subgraph "Materials Module"
+        M1[material.types.ts]
+        M2[material.repository.ts]
+        M3[material.service.ts]
+        M4[material.manager.ts]
+        M5[material.controller.ts]
+        M6[material.routes.ts]
+        M7[material-extraction.service.ts]
+    end
+
+    subgraph "Quizzes Module"
+        Q1[quiz.types.ts]
+        Q2[quiz.repository.ts]
+        Q3[quiz.service.ts]
+        Q4[quiz.manager.ts]
+        Q5[quiz.controller.ts]
+        Q6[quiz.routes.ts]
+        Q7[quiz-generation.types.ts]
+        Q8[quiz-generation.service.ts]
+        Q9[quiz-generation.manager.ts]
+        Q10[quiz-generation.controller.ts]
+        Q11[quiz-generation.routes.ts]
+    end
+
+    subgraph "Quiz Attempts Module"
+        QA1[quiz-attempt.types.ts]
+        QA2[quiz-attempt.repository.ts]
+        QA3[quiz-attempt.service.ts]
+        QA4[quiz-attempt.manager.ts]
+        QA5[quiz-attempt.controller.ts]
+        QA6[quiz-attempt.routes.ts]
+    end
+
+    subgraph "Infrastructure"
+        I1[database/index.ts]
+        I2[storage/index.ts]
+        I3[gemini/index.ts]
+    end
+
+    subgraph "Shared"
+        S1[errors/index.ts]
+        S2[types/index.ts]
+        S3[utils/logger.ts]
+    end
+
+    subgraph "Middleware"
+        MW1[authenticate.ts]
+        MW2[authorize.ts]
+        MW3[validate.ts]
+        MW4[error-handler.ts]
+        MW5[request-logger.ts]
+    end
+
+    A2 --> A3 --> A4 --> A5 --> A6
+    C2 --> C3 --> C4 --> C5 --> C6
+    E2 --> E3 --> E4 --> E5 --> E6
+    M2 --> M3 --> M4 --> M5 --> M6
+    Q2 --> Q3 --> Q4 --> Q5 --> Q6
+    Q8 --> Q9 --> Q10 --> Q11
+    QA2 --> QA3 --> QA4 --> QA5 --> QA6
+
+    A3 -.-> A2
+    A4 -.-> A3
+    A6 -.-> MW1
+    A6 -.-> MW2
+
+    C3 -.-> C2
+    E3 -.-> E2
+    M3 -.-> M2
+    Q3 -.-> Q2
+    QA3 -.-> QA2
+
+    M3 -.-> M2
+    M7 -.-> M3
+    Q8 -.-> I3
+    Q9 -.-> Q8
+    Q9 -.-> M7
+    Q9 -.-> M2
+    Q9 -.-> Q2
+
+    QA3 -.-> Q2
+    QA3 -.-> C2
+
+    A2 -.-> I1
+    C2 -.-> I1
+    E2 -.-> I1
+    M2 -.-> I1
+    Q2 -.-> I1
+    QA2 -.-> I1
+
+    M3 -.-> I2
+
+    style I1 fill:#10b981,color:#fff
+    style I2 fill:#6b7280,color:#fff
+    style I3 fill:#f59e0b,color:#000

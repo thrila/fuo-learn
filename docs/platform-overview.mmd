@@ -1,0 +1,64 @@
+graph TB
+    subgraph "FuoLearn Platform"
+        direction TB
+
+        subgraph "Frontend (React + Vite)"
+            FE1[Login / Register]
+            FE2[Dashboard]
+            FE3[Course Catalogue]
+            FE4[Material Viewer]
+            FE5[Quiz Player]
+            FE6[Progress View]
+            FE7[Admin Panel]
+            FE8[Professor Panel]
+        end
+
+        subgraph "Backend (Express + TypeScript)"
+            direction TB
+
+            subgraph "Modules"
+                M1[Auth]
+                M2[Courses]
+                M3[Enrollments]
+                M4[Materials]
+                M5[Quizzes]
+                M6[Quiz Attempts]
+            end
+
+            subgraph "Services"
+                S1[AuthService]
+                S2[CourseService]
+                S3[EnrollmentService]
+                S4[MaterialService]
+                S5[QuizService]
+                S6[QuizAttemptService]
+                S7[QuizGenerationService]
+                S8[ContentExtractionService]
+            end
+
+            subgraph "External"
+                EX1[(PostgreSQL)]
+                EX2[Gemini AI]
+                EX3[File Storage]
+            end
+        end
+
+        FE1 & FE2 & FE3 & FE4 & FE5 & FE6 & FE7 & FE8 -->|HTTP + JWT| M1 & M2 & M3 & M4 & M5 & M6
+
+        M1 --> S1
+        M2 --> S2
+        M3 --> S3
+        M4 --> S4
+        M5 --> S5
+        M5 --> S7
+        M6 --> S6
+
+        S1 & S2 & S3 & S4 & S5 & S6 --> EX1
+        S7 --> EX2
+        S7 --> S8
+        S8 --> EX3
+    end
+
+    style EX1 fill:#10b981,color:#fff
+    style EX2 fill:#f59e0b,color:#000
+    style EX3 fill:#6b7280,color:#fff

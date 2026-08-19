@@ -1,0 +1,35 @@
+flowchart TD
+    subgraph "Quiz Lifecycle"
+        A[Professor Creates Quiz] --> B[Add Questions]
+        B --> C{Quiz Complete?}
+        C -->|No| B
+        C -->|Yes| D[Publish Quiz]
+        D --> E[Students Can Attempt]
+    end
+
+    subgraph "Student Quiz Attempt"
+        E --> F[Student Starts Attempt]
+        F --> G[Answer Questions]
+        G --> H[Submit Answers]
+        H --> I[Auto-Score]
+        I --> J[Return Score + Explanations]
+    end
+
+    subgraph "AI Generation Path"
+        K[Upload Material] --> L[Extract PDF Text]
+        L --> M[Send to Gemini]
+        M --> N[Validate Response]
+        N --> O{Valid?}
+        O -->|No| P[Return Error]
+        O -->|Yes| Q[Save Quiz + Questions]
+        Q --> R[Professor Reviews]
+        R --> S{Approve?}
+        S -->|Edit| T[Modify Questions]
+        T --> R
+        S -->|Publish| D
+    end
+
+    style D fill:#10b981,color:#fff
+    style I fill:#3b82f6,color:#fff
+    style M fill:#f59e0b,color:#000
+    style J fill:#10b981,color:#fff

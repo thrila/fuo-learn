@@ -1,0 +1,34 @@
+flowchart LR
+    subgraph "Student Journey"
+        S1[Register] --> S2[Wait for Approval]
+        S2 --> S3[Login]
+        S3 --> S4[Browse Courses]
+        S4 --> S5[Request Enrollment]
+        S5 --> S6[Wait for Approval]
+        S6 --> S7[Access Course]
+        S7 --> S8[Read Materials]
+        S8 --> S9[Take Quiz]
+        S9 --> S10[View Score]
+        S10 --> S11[View Progress]
+    end
+
+    subgraph "Professor Journey"
+        P1[Login] --> P2[Manage Courses]
+        P2 --> P3[Review Enrollments]
+        P3 --> P4[Approve Students]
+        P4 --> P5[Upload Materials]
+        P5 --> P6[Generate Quiz with AI]
+        P6 --> P7[Review Quiz]
+        P7 --> P8[Publish Quiz]
+    end
+
+    subgraph "Admin Journey"
+        A1[Login] --> A2[View Pending Users]
+        A2 --> A3[Approve / Reject]
+        A3 --> A4[Manage Users]
+        A4 --> A5[Manage Courses]
+    end
+
+    style S1 fill:#3b82f6,color:#fff
+    style P1 fill:#10b981,color:#fff
+    style A1 fill:#f59e0b,color:#000

@@ -1,0 +1,41 @@
+sequenceDiagram
+    actor S as Student
+    actor P as Professor
+    participant API as Express API
+    participant DB as PostgreSQL
+
+    Note over S,P: Student Requests Enrollment
+    S->>API: POST /courses/:id/enroll
+    API->>API: authenticate + authorize(student)
+    API->>DB: check for existing enrollment
+    DB-->>API: null (not enrolled)
+    API->>DB: enrollmentRepo.create(studentId, courseId, pending)
+    DB-->>API: enrollment record
+    API-->>S: 201 Created (status: pending)
+
+    Note over S,P: Professor Reviews
+    P->>API: GET /courses/:id/enrollments
+    API->>API: authenticate + authorize(professor)
+    API->>DB: enrollmentRepo.findByCourse(courseId)
+    DB-->>API: list of enrollments
+    API-->>P: 200 OK (enrollments list)
+
+    Note over S,P: Professor Approves
+    P->>API: PATCH /enrollments/:id/status { status: approved }
+    API->>API: authenticate + authorize(professor)
+    API->>DB: enrollmentRepo.findById(id)
+    DB-->>API: enrollment record
+    API->>API: verify professor owns course
+    API->>API: verify enrollment status = pending
+    API->>DB: enrollmentRepo.updateStatus(id, approved)
+    DB-->>API: updated enrollment
+    API-->>P: 200 OK
+
+    Note over S,P: Student Accesses Course
+    S->>API: GET /courses/:id/materials
+    API->>API: authenticate + authorize(student)
+    API->>DB: verify enrollment = approved
+    DB-->>API: confirmed
+    API->>DB: materialRepo.findByCourse(courseId)
+    DB-->>API: list of materials
+    API-->>S: 200 OK

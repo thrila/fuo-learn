@@ -1,0 +1,41 @@
+sequenceDiagram
+    actor P as Professor
+    participant API as Express API
+    participant MGR as QuizGenerationManager
+    participant EXT as ContentExtractionService
+    participant STO as LocalStorage
+    participant AI as Gemini API
+    participant DB as PostgreSQL
+
+    P->>API: POST /materials/:id/generate-quiz
+    API->>API: authenticate + authorize(professor)
+
+    API->>MGR: generateFromMaterial(materialId, professorId)
+    MGR->>DB: materialRepo.findById(materialId)
+    DB-->>MGR: material record
+
+    MGR->>MGR: verify professor owns material
+
+    MGR->>STO: storage.read(material.fileKey)
+    STO-->>MGR: file buffer
+
+    MGR->>EXT: extractFromBuffer(buffer, mimeType)
+    EXT->>EXT: parse PDF, extract text
+    EXT-->>MGR: { text, pageCount }
+
+    MGR->>AI: generateJson(prompt with content)
+    Note over AI: Gemini generates quiz<br/>questions as JSON
+    AI-->>MGR: raw JSON response
+
+    MGR->>MGR: validate with Zod schema
+    MGR->>MGR: verify correctAnswer in options
+
+    MGR->>DB: quizRepo.create(quiz)
+    DB-->>MGR: quiz record
+
+    loop For each question
+        MGR->>DB: quizRepo.addQuestion(...)
+    end
+
+    MGR-->>API: { generatedQuiz, savedQuiz }
+    API-->>P: 201 Created

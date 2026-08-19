@@ -1,0 +1,36 @@
+graph TD
+    subgraph "HTTP Layer"
+        A[Express Server] --> B[Middleware]
+        B --> C[Routes]
+        C --> D[Controllers]
+    end
+
+    subgraph "Middleware"
+        B1[authenticate] --> B2[authorize]
+        B2 --> B3[validate]
+        B3 --> B4[error-handler]
+        B4 --> B5[request-logger]
+    end
+
+    subgraph "Application Layer"
+        D --> E[Managers]
+        E --> F[Services]
+    end
+
+    subgraph "Data Layer"
+        F --> G[Repositories]
+        G --> H[(PostgreSQL)]
+    end
+
+    subgraph "Infrastructure"
+        F --> I[GeminiFactory]
+        I --> J[GeminiClient]
+        J --> K[Gemini API]
+        F --> L[LocalStorage]
+        L --> M[File System]
+    end
+
+    style A fill:#3b82f6,color:#fff
+    style H fill:#10b981,color:#fff
+    style K fill:#f59e0b,color:#000
+    style M fill:#6b7280,color:#fff

@@ -1,0 +1,35 @@
+flowchart TD
+    subgraph "Request Lifecycle"
+        R[Incoming Request] --> M1[RequestLogger]
+        M1 --> M2[Helmet Security]
+        M2 --> M3[CORS]
+        M3 --> M4[Body Parser]
+        M4 --> M5{Route Match?}
+
+        M5 -->|No| NF[404 Not Found]
+        M5 -->|Yes| M6[Authenticate JWT]
+        M6 -->|Invalid| E1[401 Unauthorized]
+        M6 -->|Valid| M7[Authorize Role]
+        M7 -->|Forbidden| E2[403 Forbidden]
+        M7 -->|Allowed| M8[Validate Input]
+        M8 -->|Invalid| E3[400 Bad Request]
+        M8 -->|Valid| C[Controller]
+        C --> MG[Manager]
+        MG --> S[Service]
+        S --> REPO[Repository]
+        REPO --> DB[(Database)]
+
+        DB --> REPO
+        REPO --> S
+        S --> MG
+        MG --> C
+        C --> RES[200/201 Response]
+
+        NF & E1 & E2 & E3 --> EH[ErrorHandler Middleware]
+        EH --> LOG[Error Logger]
+        LOG --> CLIENT[Error Response with requestId]
+    end
+
+    style R fill:#3b82f6,color:#fff
+    style DB fill:#10b981,color:#fff
+    style EH fill:#ef4444,color:#fff

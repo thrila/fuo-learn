@@ -1,0 +1,44 @@
+sequenceDiagram
+    actor U as User
+    participant API as Express API
+    participant SVC as AuthService
+    participant DB as PostgreSQL
+
+    Note over U,DB: Registration
+    U->>API: POST /auth/register
+    API->>API: validate input (Zod)
+    API->>SVC: register(email, password, name, role)
+    SVC->>SVC: hash password (bcrypt)
+    SVC->>DB: userRepo.create(user)
+    DB-->>SVC: user record (status=pending)
+    SVC-->>API: { id, email, status: "pending" }
+    API-->>U: 201 Created
+
+    Note over U,DB: Admin Approval
+    actor A as Admin
+    A->>API: PATCH /auth/users/:id/approve
+    API->>API: authenticate + authorize(admin)
+    API->>SVC: approveUser(userId)
+    SVC->>DB: userRepo.update(id, { status: "active" })
+    DB-->>SVC: updated user
+    SVC-->>API: { status: "active" }
+    API-->>A: 200 OK
+
+    Note over U,DB: Login
+    U->>API: POST /auth/login
+    API->>API: validate input
+    API->>SVC: login(email, password)
+    SVC->>DB: userRepo.findByEmail(email)
+    DB-->>SVC: user record
+    SVC->>SVC: bcrypt.compare(password)
+    SVC->>SVC: jwt.sign({ id, email, role })
+    SVC-->>API: { token, user }
+    API-->>U: 200 OK
+
+    Note over U,DB: Authenticated Request
+    U->>API: GET /api/resource + Bearer token
+    API->>API: authenticate middleware
+    API->>API: jwt.verify(token)
+    API->>API: authorize(roles)
+    API->>API: route handler
+    API-->>U: response
