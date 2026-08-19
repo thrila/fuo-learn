@@ -16,6 +16,9 @@ dist/
 # Uploads
 uploads/
 
+# Password / secrets
+password.txt
+
 # Stray dev artifacts
 -w
 
